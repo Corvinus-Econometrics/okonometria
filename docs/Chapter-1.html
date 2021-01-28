@@ -133,7 +133,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
-<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Első fejezet</a></li>
+<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Első fejezet</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html#első-alfejezet"><i class="fa fa-check"></i>Első alfejezet</a></li>
+<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html#hogyan-kell-package-t-telepíteni"><i class="fa fa-check"></i>Hogyan kell package-t telepíteni?</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Második fejezet</a></li>
 </ul>
 
@@ -154,13 +157,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="Chapter-1" class="section level1">
 <h1>Első fejezet</h1>
+<div id="első-alfejezet" class="section level2">
+<h2>Első alfejezet</h2>
 <p>Első fejezet szövege […].</p>
 <p>Írás közben egyszerűen lehet választani, hogy <em>dőlt</em>, vagy <strong>félkövér</strong> betűvel írjunk valamit, illetve a <code>kódoknak érdemes ezzel a típussal kiemelni</code>. Latex kódok is könnyedén írhatóak akár: <span class="math inline">\(\frac{4}{2} = 2\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="Chapter-1.html#cb1-1"></a><span class="dv">4</span><span class="op">/</span><span class="dv">2</span></span></code></pre></div>
 <pre><code>#&gt; [1] 2</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="Chapter-1.html#cb3-1"></a><span class="kw">plot</span>(cars)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="hogyan-kell-package-t-telepíteni" class="section level2">
+<h2>Hogyan kell package-t telepíteni?</h2>
+<p><img src="images/install_package.gif" /><!-- --></p>
 
+</div>
 </div>
             </section>
 
