@@ -1,0 +1,13 @@
+# Első fejezet {#Chapter-1}
+
+Első fejezet szövege [...].
+
+Írás közben egyszerűen lehet választani, hogy *dőlt*, vagy **félkövér** betűvel írjunk valamit, illetve a `kódoknak érdemes ezzel a típussal kiemelni`. Latex kódok is könnyedén írhatóak akár: $\frac{4}{2} = 2$.
+
+```{r}
+4/2
+```
+
+```{r}
+plot(cars)
+```
