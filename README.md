@@ -1,1 +1,1 @@
-# okonometria
+# Ökonometria
