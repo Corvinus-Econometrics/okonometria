@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Második fejezet | Ökonometria</title>
-  <meta name="description" content="Második fejezet | Ökonometria" />
+  <title>A ggplot2 package használata | Ökonometria</title>
+  <meta name="description" content="A ggplot2 package használata | Ökonometria" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Második fejezet | Ökonometria" />
+  <meta property="og:title" content="A ggplot2 package használata | Ökonometria" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Második fejezet | Ökonometria" />
+  <meta name="twitter:title" content="A ggplot2 package használata | Ökonometria" />
   
   
   
@@ -137,7 +137,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html#első-alfejezet"><i class="fa fa-check"></i>Első alfejezet</a></li>
 <li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html#hogyan-kell-package-t-telepíteni"><i class="fa fa-check"></i>Hogyan kell package-t telepíteni?</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Második fejezet</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>A ggplot2 package használata</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#motiváció-a-ggplot-package-használatához"><i class="fa fa-check"></i>Motiváció a ggplot package használatához</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#lépés"><i class="fa fa-check"></i>1. lépés</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -156,14 +159,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="Chapter-2" class="section level1">
-<h1>Második fejezet</h1>
+<h1>A ggplot2 package használata</h1>
 <style type="text/css">
 p {
   text-align: justify;
 }
 </style>
-<p>Második fejezet szövege […]</p>
+<div id="motiváció-a-ggplot-package-használatához" class="section level2">
+<h2>Motiváció a ggplot package használatához</h2>
+<p>Bár maga a base R [értve itt ilyenkor mindig a <code>plot</code> paranccsal készült ábrákat] segítségével is lehet ábrákat készíteni, ez az egyszerűségét leszámítva nagyon ritkán ajánlott. Helyette érdemes a ggplot2-t alkalmazni, amely bár komplexebb, mint a base R, a személyre szabhatóságának szinte nincs limitje.
+Ám amelett, hogy szebb ábráink lesznek van egy sokkal fontosabb oka amiért a ggplot fontos. A csomag a nevét Leland Wilkinson <strong>Grammar of Graphics</strong> c. munkája után kapta (innen a <em>gg</em>), amelyben megfogalmazásra került tulajdonképpen az ideális ábrakészítő algoritmus struktúrája. Mivel a ggplot2 ezt az elvet követi, így meglátjátok majd, hogy bár sok dolgot kell fejben tartani, minden logikus benne. Miután sikerül elsajátítani ezt az anyagot (és némi utána olvasás után) bármilyen szükséges ábrát el fogtok tudni készíteni.</p>
+</div>
+<div id="lépés" class="section level2">
+<h2>1. lépés</h2>
+<p>A ggplot2 telepíthető önállóan is, illetve ez a csomag része egy “csomaggyűjteménynek”, amit <code>tidyverse</code>-nek hívnak. Jelenleg mi csak a ggplot2-vel fogunk foglalkozni, így annak telepítése és betöltése is bőven elegendő lesz. Így annak függvényébne, hogy le van-e már töltve a package telepítsük [<code>install.packages("ggplot2")</code>], vagy ne, majd töltsük be [<code>library(ggplot2)</code>]. A ggplot2 helyett lehet egyből a <code>tidyverse</code>-t is betölteni, azonban jelenleg a többi package redundáns nekünk.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter-2.html#cb4-1"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
+<p>A ggplot2-vel kapunk néhány kiegészítő adattáblát, az egyszerűség kedvéért használjuk most ezek közül a <code>diamonds</code>-t. Lássuk az első kódunkat!</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Amit látunk tehát, hogy az ábrázolás a <code>ggplot</code> paranccsal kezdődik. Itt definiálni kell, hogy melyik táblának adait szeretnénk felhasználni (<code>diamonds</code>), majd pedig az ábrázoláshoz használt “keretet”, ami az <code>aes</code>-es belül kap helyet. Itt általában (mint például most) az x és y tengelyen ábrázolt adatokat kell megadni. A ggplot-ot mindig egy <code>geom</code> parancs követi, amellyel az ábra típusát adjuk meg.
+Elsőre látásra ez még lehet túl sok információ, illetve a következőkben a bonyolultabb ábrákra rátérve elveszítheti az ember a fonalat. Amíg bizonytalan a ggplot használata javaslom a <code>esquisse</code> package használatát. Ezt csupán telepíteni kell a <code>install.packages("esquisse")</code> paranccsal, majd az <code>Addins</code> menüből lehet előhívni. Ennek segítségével “manuális” adhatóak meg az ábra elemei. Lássuk például az előző ábrát!</p>
+<p><img src="images/esquisse.gif" /></p>
 
+</div>
 </div>
             </section>
 
