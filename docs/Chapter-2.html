@@ -139,7 +139,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>A ggplot2 package használata</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#motiváció-a-ggplot-package-használatához"><i class="fa fa-check"></i>Motiváció a ggplot package használatához</a></li>
-<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#lépés"><i class="fa fa-check"></i>1. lépés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#bevezetés"><i class="fa fa-check"></i>Bevezetés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#esquisse"><i class="fa fa-check"></i>Esquisse</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#szín"><i class="fa fa-check"></i>Szín</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#téma"><i class="fa fa-check"></i>Téma</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#geom"><i class="fa fa-check"></i>Geom</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#aes"><i class="fa fa-check"></i>Aes</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#facet"><i class="fa fa-check"></i>Facet</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#kitekintés"><i class="fa fa-check"></i>Kitekintés</a></li>
 </ul></li>
 </ul>
 
@@ -167,20 +174,1038 @@ p {
 </style>
 <div id="motiváció-a-ggplot-package-használatához" class="section level2">
 <h2>Motiváció a ggplot package használatához</h2>
-<p>Bár maga a base R [értve itt ilyenkor mindig a <code>plot</code> paranccsal készült ábrákat] segítségével is lehet ábrákat készíteni, ez az egyszerűségét leszámítva nagyon ritkán ajánlott. Helyette érdemes a ggplot2-t alkalmazni, amely bár komplexebb, mint a base R, a személyre szabhatóságának szinte nincs limitje.
-Ám amelett, hogy szebb ábráink lesznek van egy sokkal fontosabb oka amiért a ggplot fontos. A csomag a nevét Leland Wilkinson <strong>Grammar of Graphics</strong> c. munkája után kapta (innen a <em>gg</em>), amelyben megfogalmazásra került tulajdonképpen az ideális ábrakészítő algoritmus struktúrája. Mivel a ggplot2 ezt az elvet követi, így meglátjátok majd, hogy bár sok dolgot kell fejben tartani, minden logikus benne. Miután sikerül elsajátítani ezt az anyagot (és némi utána olvasás után) bármilyen szükséges ábrát el fogtok tudni készíteni.</p>
+<p>Bár maga a base R [értve itt ilyenkor mindig a <code>plot</code> paranccsal készült ábrákat] segítségével is lehet ábrákat készíteni, ez az egyszerűségét leszámítva nagyon ritkán ajánlott. Helyette érdemes a ggplot2-t alkalmazni, amely bár komplexebb, mint a base R, a személyre szabhatóságának szinte nincs felső határa.</p>
+<p><img src="images/plot_ggplot.jpg" /></p>
+<p>Ám amelett, hogy szebb ábráink lesznek van egy sokkal fontosabb ok, amiért a ggplotot használjuk. A csomag a nevét Leland Wilkinson <strong>Grammar of Graphics</strong> c. munkája után kapta (innen a <em>gg</em>), amelyben megfogalmazásra került lényegében az ideális ábrakészítő algoritmus struktúrája. Mivel a ggplot2 ezt az elvet követi, így meglátjátok majd, hogy bár sok dolgot kell fejben tartani, minden logikus benne. Miután sikerül elsajátítani ezt az anyagot (és némi utána olvasás után) bármilyen szükséges ábrát el fogtok tudni készíteni.</p>
 </div>
-<div id="lépés" class="section level2">
-<h2>1. lépés</h2>
+<div id="bevezetés" class="section level2">
+<h2>Bevezetés</h2>
 <p>A ggplot2 telepíthető önállóan is, illetve ez a csomag része egy “csomaggyűjteménynek”, amit <code>tidyverse</code>-nek hívnak. Jelenleg mi csak a ggplot2-vel fogunk foglalkozni, így annak telepítése és betöltése is bőven elegendő lesz. Így annak függvényébne, hogy le van-e már töltve a package telepítsük [<code>install.packages("ggplot2")</code>], vagy ne, majd töltsük be [<code>library(ggplot2)</code>]. A ggplot2 helyett lehet egyből a <code>tidyverse</code>-t is betölteni, azonban jelenleg a többi package redundáns nekünk.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter-2.html#cb4-1"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
-<p>A ggplot2-vel kapunk néhány kiegészítő adattáblát, az egyszerűség kedvéért használjuk most ezek közül a <code>diamonds</code>-t. Lássuk az első kódunkat!</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
-<span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Amit látunk tehát, hogy az ábrázolás a <code>ggplot</code> paranccsal kezdődik. Itt definiálni kell, hogy melyik táblának adait szeretnénk felhasználni (<code>diamonds</code>), majd pedig az ábrázoláshoz használt “keretet”, ami az <code>aes</code>-es belül kap helyet. Itt általában (mint például most) az x és y tengelyen ábrázolt adatokat kell megadni. A ggplot-ot mindig egy <code>geom</code> parancs követi, amellyel az ábra típusát adjuk meg.
-Elsőre látásra ez még lehet túl sok információ, illetve a következőkben a bonyolultabb ábrákra rátérve elveszítheti az ember a fonalat. Amíg bizonytalan a ggplot használata javaslom a <code>esquisse</code> package használatát. Ezt csupán telepíteni kell a <code>install.packages("esquisse")</code> paranccsal, majd az <code>Addins</code> menüből lehet előhívni. Ennek segítségével “manuális” adhatóak meg az ábra elemei. Lássuk például az előző ábrát!</p>
+<p>A ggplot2-vel kapunk néhány kiegészítő adattáblát, az egyszerűség kedvéért használjuk most ezek közül a <code>diamonds</code>-t. Pillanatra tekintsük meg az adattábla felépítését:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a><span class="kw">head</span>(diamonds)</span></code></pre></div>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#zuavtkqjxo .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zuavtkqjxo .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zuavtkqjxo .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zuavtkqjxo .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zuavtkqjxo .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zuavtkqjxo .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zuavtkqjxo .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zuavtkqjxo .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zuavtkqjxo .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zuavtkqjxo .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zuavtkqjxo .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zuavtkqjxo .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zuavtkqjxo .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#zuavtkqjxo .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zuavtkqjxo .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zuavtkqjxo .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zuavtkqjxo .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zuavtkqjxo .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zuavtkqjxo .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zuavtkqjxo .gt_left {
+  text-align: left;
+}
+
+#zuavtkqjxo .gt_center {
+  text-align: center;
+}
+
+#zuavtkqjxo .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zuavtkqjxo .gt_font_normal {
+  font-weight: normal;
+}
+
+#zuavtkqjxo .gt_font_bold {
+  font-weight: bold;
+}
+
+#zuavtkqjxo .gt_font_italic {
+  font-style: italic;
+}
+
+#zuavtkqjxo .gt_super {
+  font-size: 65%;
+}
+
+#zuavtkqjxo .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="zuavtkqjxo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="10" class="gt_heading gt_title gt_font_normal" style>A diamonds adattábla</th>
+    </tr>
+    <tr>
+      <th colspan="10" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">carat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">cut</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">color</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">clarity</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">depth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">table</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">price</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">x</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">y</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">z</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_right">0.23</td>
+      <td class="gt_row gt_center">Ideal</td>
+      <td class="gt_row gt_center">E</td>
+      <td class="gt_row gt_center">SI2</td>
+      <td class="gt_row gt_right">61.5</td>
+      <td class="gt_row gt_right">55</td>
+      <td class="gt_row gt_center">326</td>
+      <td class="gt_row gt_right">3.95</td>
+      <td class="gt_row gt_right">3.98</td>
+      <td class="gt_row gt_right">2.43</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">0.21</td>
+      <td class="gt_row gt_center">Premium</td>
+      <td class="gt_row gt_center">E</td>
+      <td class="gt_row gt_center">SI1</td>
+      <td class="gt_row gt_right">59.8</td>
+      <td class="gt_row gt_right">61</td>
+      <td class="gt_row gt_center">326</td>
+      <td class="gt_row gt_right">3.89</td>
+      <td class="gt_row gt_right">3.84</td>
+      <td class="gt_row gt_right">2.31</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">0.23</td>
+      <td class="gt_row gt_center">Good</td>
+      <td class="gt_row gt_center">E</td>
+      <td class="gt_row gt_center">VS1</td>
+      <td class="gt_row gt_right">56.9</td>
+      <td class="gt_row gt_right">65</td>
+      <td class="gt_row gt_center">327</td>
+      <td class="gt_row gt_right">4.05</td>
+      <td class="gt_row gt_right">4.07</td>
+      <td class="gt_row gt_right">2.31</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">0.29</td>
+      <td class="gt_row gt_center">Premium</td>
+      <td class="gt_row gt_center">I</td>
+      <td class="gt_row gt_center">VS2</td>
+      <td class="gt_row gt_right">62.4</td>
+      <td class="gt_row gt_right">58</td>
+      <td class="gt_row gt_center">334</td>
+      <td class="gt_row gt_right">4.20</td>
+      <td class="gt_row gt_right">4.23</td>
+      <td class="gt_row gt_right">2.63</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">0.31</td>
+      <td class="gt_row gt_center">Good</td>
+      <td class="gt_row gt_center">J</td>
+      <td class="gt_row gt_center">SI2</td>
+      <td class="gt_row gt_right">63.3</td>
+      <td class="gt_row gt_right">58</td>
+      <td class="gt_row gt_center">335</td>
+      <td class="gt_row gt_right">4.34</td>
+      <td class="gt_row gt_right">4.35</td>
+      <td class="gt_row gt_right">2.75</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_right">0.24</td>
+      <td class="gt_row gt_center">Very Good</td>
+      <td class="gt_row gt_center">J</td>
+      <td class="gt_row gt_center">VVS2</td>
+      <td class="gt_row gt_right">62.8</td>
+      <td class="gt_row gt_right">57</td>
+      <td class="gt_row gt_center">336</td>
+      <td class="gt_row gt_right">3.94</td>
+      <td class="gt_row gt_right">3.96</td>
+      <td class="gt_row gt_right">2.48</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>Lássuk az első ábránkat ggplottal!</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter-2.html#cb6-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb6-2"><a href="Chapter-2.html#cb6-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-9-1.png" alt="A legelső ábránk ggplot használatával" width="672" />
+<p class="caption">
+Ábra 1: A legelső ábránk ggplot használatával
+</p>
+</div>
+<p>Amit látunk, hogy az ábrázolás a <code>ggplot</code> paranccsal kezdődik. Itt definiálni kell, hogy melyik táblának adatait szeretnénk felhasználni (<code>diamonds</code>), majd pedig az ábrázoláshoz használt “keretet”, ami az <code>aes</code>-es belül kap helyet. Itt általában (mint például most) az x és y tengelyen ábrázolt adatokat kell megadni. A ggplot-ot mindig egy <code>geom</code> parancs követi, amellyel az ábra típusát adjuk meg.</p>
+<p>Ezen az ábrán azonban még nicsen semmilyen felirat. Minden felirat megadható a <code>labs()</code> függvényben. Példa:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="Chapter-2.html#cb7-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb7-2"><a href="Chapter-2.html#cb7-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb7-3"><a href="Chapter-2.html#cb7-3"></a><span class="st">  </span><span class="kw">labs</span>(</span>
+<span id="cb7-4"><a href="Chapter-2.html#cb7-4"></a>    <span class="dt">title =</span> <span class="st">&quot;Figyelemfelkeltő cím&quot;</span>,</span>
+<span id="cb7-5"><a href="Chapter-2.html#cb7-5"></a>    <span class="dt">subtitle =</span> <span class="st">&quot;Az alcím pontosítja a témát&quot;</span>,</span>
+<span id="cb7-6"><a href="Chapter-2.html#cb7-6"></a>    <span class="dt">x =</span> <span class="st">&quot;x-tengely váltózójának neve&quot;</span>,</span>
+<span id="cb7-7"><a href="Chapter-2.html#cb7-7"></a>    <span class="dt">y =</span> <span class="st">&quot;y-tengely változójának neve&quot;</span>,</span>
+<span id="cb7-8"><a href="Chapter-2.html#cb7-8"></a>    <span class="dt">caption =</span> <span class="st">&quot;Mindent megmagyarázó hosszú leírás.&quot;</span></span>
+<span id="cb7-9"><a href="Chapter-2.html#cb7-9"></a>  )</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-10-1.png" alt="Feliratok elhelyezése az ábrán" width="672" />
+<p class="caption">
+Ábra 2: Feliratok elhelyezése az ábrán
+</p>
+</div>
+</div>
+<div id="esquisse" class="section level2">
+<h2>Esquisse</h2>
+<p>Elsőre látásra ez még lehet túl sok információ, illetve a következőkben a bonyolultabb ábrákra rátérve elveszítheti az ember a fonalat. Amíg bizonytalan a ggplot használata javaslom a <code>esquisse</code> packaget Ezt csupán telepíteni kell a <code>install.packages("esquisse")</code> paranccsal, majd az <code>Addins</code> menüből lehet előhívni. Ennek segítségével “manuálisan” adhatóak meg az ábra elemei. Lássuk például az előző ábrát!</p>
 <p><img src="images/esquisse.gif" /></p>
+</div>
+<div id="szín" class="section level2">
+<h2>Szín</h2>
+<p>Az <code>esquisse</code> automatikusan hozzáadott 3 elemet, amit akkor itt tisztázni szükséges. A <code>geom</code> függvényen belül a <code>size</code> paraméter a pontok méretért felel, míg a <code>color</code> a pontok színéért. Színként megadható bármilyen hexadecimális érték, illetve az R számos színt ismer (<code>red</code>, <code>green</code>, <code>blue</code>, <code>black</code>, stb.).</p>
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="images/color_examples.png" alt="Néhány példa az elérhető színekre"  />
+<p class="caption">
+Ábra 3: Néhány példa az elérhető színekre
+</p>
+</div>
+</div>
+<div id="téma" class="section level2">
+<h2>Téma</h2>
+<p>A 3. dolog amit <code>esquisse</code> csatolt a kódunk mellé az egy <code>theme</code> parancs. Ez a parancstípus az ábra hátterének, jelmagyarázatának és feliratainak esztétikáját adja meg. Lássunk ezekből is néhányat!</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-2.html#cb8-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb8-2"><a href="Chapter-2.html#cb8-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb8-3"><a href="Chapter-2.html#cb8-3"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span>
+<span id="cb8-4"><a href="Chapter-2.html#cb8-4"></a></span>
+<span id="cb8-5"><a href="Chapter-2.html#cb8-5"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb8-6"><a href="Chapter-2.html#cb8-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb8-7"><a href="Chapter-2.html#cb8-7"></a><span class="st">  </span><span class="kw">theme_classic</span>()</span>
+<span id="cb8-8"><a href="Chapter-2.html#cb8-8"></a></span>
+<span id="cb8-9"><a href="Chapter-2.html#cb8-9"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb8-10"><a href="Chapter-2.html#cb8-10"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb8-11"><a href="Chapter-2.html#cb8-11"></a><span class="st">  </span><span class="kw">theme_grey</span>()</span>
+<span id="cb8-12"><a href="Chapter-2.html#cb8-12"></a></span>
+<span id="cb8-13"><a href="Chapter-2.html#cb8-13"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb8-14"><a href="Chapter-2.html#cb8-14"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb8-15"><a href="Chapter-2.html#cb8-15"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-13"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-13-.gif" alt="Néhány elérhető téma" width="672" />
+<p class="caption">
+Ábra 4: Néhány elérhető téma
+</p>
+</div>
+<p>Persze van még rengeteg, válogass nyugodtan: <a href="https://www.datanovia.com/en/blog/ggplot-themes-gallery/" class="uri">https://www.datanovia.com/en/blog/ggplot-themes-gallery/</a></p>
+<p>Ami még fontos, hogy a <code>theme()</code> függvénnyel módosíthatóak a témánk egyes elemei (háttérszín, betűszín stb.). Például legyen tényleg figyelemfelkeltő a fentebb bemutatott cím!</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="Chapter-2.html#cb9-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb9-2"><a href="Chapter-2.html#cb9-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb9-3"><a href="Chapter-2.html#cb9-3"></a><span class="st">  </span><span class="kw">labs</span>(</span>
+<span id="cb9-4"><a href="Chapter-2.html#cb9-4"></a>    <span class="dt">title =</span> <span class="st">&quot;Figyelemfelkeltő cím&quot;</span>,</span>
+<span id="cb9-5"><a href="Chapter-2.html#cb9-5"></a>    <span class="dt">subtitle =</span> <span class="st">&quot;Az alcím pontosítja a témát&quot;</span>,</span>
+<span id="cb9-6"><a href="Chapter-2.html#cb9-6"></a>    <span class="dt">x =</span> <span class="st">&quot;x-tengely váltózójának neve&quot;</span>,</span>
+<span id="cb9-7"><a href="Chapter-2.html#cb9-7"></a>    <span class="dt">y =</span> <span class="st">&quot;y-tengely változójának neve&quot;</span>,</span>
+<span id="cb9-8"><a href="Chapter-2.html#cb9-8"></a>    <span class="dt">caption =</span> <span class="st">&quot;Mindent megmagyarázó hosszú leírás.&quot;</span></span>
+<span id="cb9-9"><a href="Chapter-2.html#cb9-9"></a>  ) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb9-10"><a href="Chapter-2.html#cb9-10"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb9-11"><a href="Chapter-2.html#cb9-11"></a>    <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">color =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="dv">30</span>)</span>
+<span id="cb9-12"><a href="Chapter-2.html#cb9-12"></a>  )</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-14"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-14-1.png" alt="Téma egy elmének megváltoztatására példa" width="672" />
+<p class="caption">
+Ábra 5: Téma egy elmének megváltoztatására példa
+</p>
+</div>
+</div>
+<div id="geom" class="section level2">
+<h2>Geom</h2>
+<p>A plot szempontjából lényeges fontosabb azonban a <code>geom</code> függvény. Maga a függvény adja meg az ábra típusát, azonban a benne foglalt paraméterek sem elhanyagolhatóak. Nézzük példát a típusokra (csak párat van módom említeni a végtelenül sokból)!</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter-2.html#cb10-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat)) <span class="op">+</span></span>
+<span id="cb10-2"><a href="Chapter-2.html#cb10-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>()</span>
+<span id="cb10-3"><a href="Chapter-2.html#cb10-3"></a></span>
+<span id="cb10-4"><a href="Chapter-2.html#cb10-4"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat)) <span class="op">+</span></span>
+<span id="cb10-5"><a href="Chapter-2.html#cb10-5"></a><span class="st">  </span><span class="kw">geom_histogram</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb10-6"><a href="Chapter-2.html#cb10-6"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(diamonds<span class="op">$</span>carat), <span class="dt">color =</span> <span class="st">&#39;red4&#39;</span>)</span>
+<span id="cb10-7"><a href="Chapter-2.html#cb10-7"></a></span>
+<span id="cb10-8"><a href="Chapter-2.html#cb10-8"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut)) <span class="op">+</span></span>
+<span id="cb10-9"><a href="Chapter-2.html#cb10-9"></a><span class="st">  </span><span class="kw">geom_bar</span>()</span>
+<span id="cb10-10"><a href="Chapter-2.html#cb10-10"></a></span>
+<span id="cb10-11"><a href="Chapter-2.html#cb10-11"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb10-12"><a href="Chapter-2.html#cb10-12"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-16"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-16-1.png" alt="Példák ábratípusokra" width="672" />
+<p class="caption">
+Ábra 6: Példák ábratípusokra
+</p>
+</div>
+<p>A 2. kódból látszik, hogy több <code>geom</code> is tartozhat egyszerre egy ábrához, így lehet például egy hisztogramon feltüntetni az átlagot egy függőleges vonallal (<code>geom_vline</code>). Ennek párja is rendkívül hasznos tud lennni a <code>geom_hline</code>, amivel lehet akár 0 mentén húzni egy vízszintes vonalat. A <code>cut</code> egy kategorikus változó az adattáblánkban, amelynek az egyes kategóriákhoz tartozó darabszámait egy <code>geom_bar</code>-al gyorsan kirajzolhatjuk.
+Most nézzük a paramétereket! Eddig láttunk példát a <code>size</code>-ra és a <code>color</code>-ra, ami majdnem minden geom esetén csinál valamit, de egyes geomoknak vannak speciális paramétereik is, mint pélául az előbbi példában az <code>xintercept</code>. Lássunk néhány további fontos paraméterre példákat:</p>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#vrsezlqphw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vrsezlqphw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vrsezlqphw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vrsezlqphw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vrsezlqphw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vrsezlqphw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vrsezlqphw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vrsezlqphw .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vrsezlqphw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vrsezlqphw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vrsezlqphw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vrsezlqphw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vrsezlqphw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#vrsezlqphw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vrsezlqphw .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vrsezlqphw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vrsezlqphw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vrsezlqphw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vrsezlqphw .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vrsezlqphw .gt_left {
+  text-align: left;
+}
+
+#vrsezlqphw .gt_center {
+  text-align: center;
+}
+
+#vrsezlqphw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vrsezlqphw .gt_font_normal {
+  font-weight: normal;
+}
+
+#vrsezlqphw .gt_font_bold {
+  font-weight: bold;
+}
+
+#vrsezlqphw .gt_font_italic {
+  font-style: italic;
+}
+
+#vrsezlqphw .gt_super {
+  font-size: 65%;
+}
+
+#vrsezlqphw .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="vrsezlqphw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Paraméter</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Jelentés</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_center">fill</td>
+      <td class="gt_row gt_center">kitöltés színe</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">alpha</td>
+      <td class="gt_row gt_center">átlátszóság</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">ltp</td>
+      <td class="gt_row gt_center">vonal szaggatásának típusa</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">shape</td>
+      <td class="gt_row gt_center">alak típusa</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat)) <span class="op">+</span></span>
+<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a></span>
+<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat)) <span class="op">+</span></span>
+<span id="cb11-5"><a href="Chapter-2.html#cb11-5"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="kw">mean</span>(diamonds<span class="op">$</span>carat), <span class="dt">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb11-6"><a href="Chapter-2.html#cb11-6"></a></span>
+<span id="cb11-7"><a href="Chapter-2.html#cb11-7"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> cut)) <span class="op">+</span></span>
+<span id="cb11-8"><a href="Chapter-2.html#cb11-8"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">alpha =</span> <span class="fl">.3</span>)</span>
+<span id="cb11-9"><a href="Chapter-2.html#cb11-9"></a></span>
+<span id="cb11-10"><a href="Chapter-2.html#cb11-10"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> diamonds, <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb11-11"><a href="Chapter-2.html#cb11-11"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">fill =</span> <span class="st">&#39;green&#39;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-19"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-19-1.png" alt="Példák geom paraméterre" width="672" />
+<p class="caption">
+Ábra 7: Példák geom paraméterre
+</p>
+</div>
+<p>Az utolsó ábra itt még igényel némi magyarázatot. A pont diagram alapbeállítása szerint csak <code>color</code> paraméter adható meg. Azonban ha a <code>shape</code>-t átállítjuk, akkor van lehetőségünk olyan pontdiagramokat rajzolni, amelyeknek belsejéhez tartozó színt adja meg a <code>fill</code>, a szegélyét a <code>color</code>.</p>
+</div>
+<div id="aes" class="section level2">
+<h2>Aes</h2>
+<p>Korábban csak átsiklottunk az <code>aes()</code> függvényen, ami az ábra “keretét” adta. Most nézzük meg kicsit részletesebben! A <code>mapping</code> paraméter, aminek megadásához használjuk fel az <code>aes()</code>-t az előzőekben a <code>ggplot()</code> függvényen belül szerepelt. Ennek azonban nem kell feltétlenül így lennie. A következő 3 kód, mind ugyanazt hajtja végre (erre még visszatérünk):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-2.html#cb12-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span>
+<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a></span>
+<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a><span class="kw">ggplot</span>(diamonds) <span class="op">+</span></span>
+<span id="cb12-5"><a href="Chapter-2.html#cb12-5"></a><span class="st">  </span><span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price) <span class="op">+</span></span>
+<span id="cb12-6"><a href="Chapter-2.html#cb12-6"></a><span class="st">  </span><span class="kw">geom_point</span>()</span>
+<span id="cb12-7"><a href="Chapter-2.html#cb12-7"></a></span>
+<span id="cb12-8"><a href="Chapter-2.html#cb12-8"></a><span class="kw">ggplot</span>(diamonds) <span class="op">+</span></span>
+<span id="cb12-9"><a href="Chapter-2.html#cb12-9"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price))</span></code></pre></div>
+<p>Az <code>aes</code>-ben azonban nem csak x- és y-tengely változóit definiálhatjuk. Minden ami <code>geom</code>-beni paraméter, az megadásra kerülhet az <code>aes()</code>-ben is, azonban ilyenkor az adott változó értéke szerint kerül megadásra (pl.: egy harmadik változó szerint van definiálva a méret, vagy a szín). Ami paraméter az <code>aes()</code>-ben kerül megadásra, az automatikusan a jelmagyarázatra is felkerül. Lássunk két példát!</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span></span>
+<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span>
+<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a></span>
+<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">size =</span> cut)) <span class="op">+</span></span>
+<span id="cb13-5"><a href="Chapter-2.html#cb13-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.3</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-22"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-22-1.png" alt="Extra változó felvétele az aes()-be" width="672" />
+<p class="caption">
+Ábra 8: Extra változó felvétele az aes()-be
+</p>
+</div>
+<p>Ha egy változó szerint adjuk meg a színeket, akkor érdemes a színezésnek módját is megadni. Erre leginkább a <code>viridis</code> függvények a javasoltak (számos alkalommla láthatod tudományos publikációkban + <em>végződésre figyeljünk: viridis_d, mint diszkért/viridis_c, mint folytonos</em>), de ha például fontos, hogy fekete-fehér legyen, arra is van mód, illetve “kézileg” is meg lehet adni színeket.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-2.html#cb14-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span></span>
+<span id="cb14-2"><a href="Chapter-2.html#cb14-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span>
+<span id="cb14-3"><a href="Chapter-2.html#cb14-3"></a></span>
+<span id="cb14-4"><a href="Chapter-2.html#cb14-4"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span></span>
+<span id="cb14-5"><a href="Chapter-2.html#cb14-5"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb14-6"><a href="Chapter-2.html#cb14-6"></a><span class="st">  </span><span class="kw">scale_color_viridis_d</span>(<span class="dt">option =</span> <span class="st">&quot;magma&quot;</span>)</span>
+<span id="cb14-7"><a href="Chapter-2.html#cb14-7"></a></span>
+<span id="cb14-8"><a href="Chapter-2.html#cb14-8"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span></span>
+<span id="cb14-9"><a href="Chapter-2.html#cb14-9"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb14-10"><a href="Chapter-2.html#cb14-10"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(</span>
+<span id="cb14-11"><a href="Chapter-2.html#cb14-11"></a>    <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb14-12"><a href="Chapter-2.html#cb14-12"></a>    )</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-24"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-24-1.png" alt="Kitöltési opciók" width="672" />
+<p class="caption">
+Ábra 9: Kitöltési opciók
+</p>
+</div>
+<p>És most vissza oda, hogy miért is hasznos, hogy több <code>aes()</code> definiálható egyetlen ábrán. Elképzelhető, hogy két külön <code>geom</code>-ot használunk együtt. Legyen mondjuk egy pontdiagram és egy azokra illesztett “trendvonal”. Utóbbi a <code>geom_smooth</code> paranccsal érhető el, s amennyiben lineáris függvény formára vágyunk (yes), úgy adjuk meg neki a <code>method = "lm"</code> paramétert.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-2.html#cb15-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span></span>
+<span id="cb15-2"><a href="Chapter-2.html#cb15-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="Chapter-2.html#cb15-3"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-25"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-25-1.png" alt="Lineáris trend illesztése pontdiagramra" width="672" />
+<p class="caption">
+Ábra 10: Lineáris trend illesztése pontdiagramra
+</p>
+</div>
+<p>Mint látjuk jelen esetben a <code>geom_smooth</code> ugyanazt az <code>aes()</code>-t alkalmazza, mint a <code>geom_point</code>. Ez azonban problémás, ha nem akarunk a kategorikus ismérv mentén 5 külön trendvonalat illeszteni. Ilyenkor jelent megoldás egy új <code>aes()</code> megadása egyetlen ábrán belül.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="Chapter-2.html#cb16-1"></a><span class="kw">ggplot</span>(diamonds) <span class="op">+</span></span>
+<span id="cb16-2"><a href="Chapter-2.html#cb16-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price, <span class="dt">color =</span> cut)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb16-3"><a href="Chapter-2.html#cb16-3"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price), <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-26"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-26-1.png" alt="Lineáris trend illesztése pontdiagramra két külön esztétika függvénnyel" width="672" />
+<p class="caption">
+Ábra 11: Lineáris trend illesztése pontdiagramra két külön esztétika függvénnyel
+</p>
+</div>
+</div>
+<div id="facet" class="section level2">
+<h2>Facet</h2>
+<p>A <code>facet</code> az utolsó parancs amit érinteni kívánunk. Ennek segítségével lehetőség van egy ábra felosztására valamely változó mentén. Például a <code>cut</code> változó szerint csoportosítva megtekintve a pontdiagramok:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="Chapter-2.html#cb17-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb17-2"><a href="Chapter-2.html#cb17-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb17-3"><a href="Chapter-2.html#cb17-3"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>cut)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-27"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-27-1.png" alt="Facet alkalmazása egy változó szerint" width="672" />
+<p class="caption">
+Ábra 12: Facet alkalmazása egy változó szerint
+</p>
+</div>
+<p>Ha pedig soronként és oszloponként is akarunk csoportosítani:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-2.html#cb18-1"></a><span class="kw">ggplot</span>(diamonds, <span class="kw">aes</span>(<span class="dt">x =</span> carat, <span class="dt">y =</span> price)) <span class="op">+</span></span>
+<span id="cb18-2"><a href="Chapter-2.html#cb18-2"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb18-3"><a href="Chapter-2.html#cb18-3"></a><span class="st">  </span><span class="kw">facet_grid</span>(color <span class="op">~</span><span class="st"> </span>cut)</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-28"></span>
+<img src="my-book_files/figure-html/unnamed-chunk-28-1.png" alt="Facet alkalmazása egy változó szerint" width="672" />
+<p class="caption">
+Ábra 13: Facet alkalmazása egy változó szerint
+</p>
+</div>
+</div>
+<div id="kitekintés" class="section level2">
+<h2>Kitekintés</h2>
+<p>A ggplot2 logikusan felépített működése annyira a felhasználók kedvencévé tette, hogy számos kiegészító package épült rá: <code>ggpubs</code>, <code>GGally</code>, <code>gganimate</code>, stb. Ezek jelenleg nem részei a tananyagnak, azonban érdemes rájuk nézni, ha szakdolgozat vagy TDK prezentálása során szeretnéd lenyűgözni a közönséged. Kedvcsináló:</p>
+<iframe src="https://www.youtube.com/watch?v=SnCi0s0e4Io" width="672" height="400px">
+</iframe>
 
 </div>
 </div>
