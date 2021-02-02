@@ -62,7 +62,7 @@ ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
 
 ## Esquisse
 
-Elsőre látásra ez még lehet túl sok információ, illetve a következőkben a bonyolultabb ábrákra rátérve elveszítheti az ember a fonalat. Amíg bizonytalan a ggplot használata javaslom a `esquisse` packaget Ezt csupán telepíteni kell a `install.packages("esquisse")` paranccsal, majd az `Addins` menüből lehet előhívni. Ennek segítségével "manuálisan" adhatóak meg az ábra elemei. Lássuk például az előző ábrát!
+Első látásra ez még lehet túl sok információ, illetve a következőkben a bonyolultabb ábrákra rátérve elveszítheti az ember a fonalat. Amíg bizonytalan a ggplot használata javaslom a `esquisse` packaget Ezt csupán telepíteni kell a `install.packages("esquisse")` paranccsal, majd az `Addins` menüből lehet előhívni. Ennek segítségével "manuálisan" adhatóak meg az ábra elemei. Lássuk például az előző ábrát!
 
 ![](images/esquisse.gif)
 
@@ -283,7 +283,7 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 ```
 Ha pedig soronként és oszloponként is akarunk csoportosítani:
 
-```{r fig.cap="Facet alkalmazása egy változó szerint", fig.height=12}
+```{r fig.cap="Facet alkalmazása két változó szerint", fig.height=12}
 ggplot(diamonds, aes(x = carat, y = price)) +
   geom_point() +
   facet_grid(color ~ cut)
@@ -293,6 +293,8 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 A ggplot2 logikusan felépített működése annyira a felhasználók kedvencévé tette, hogy számos kiegészító package épült rá: `ggpubs`, `GGally`, `gganimate`, stb. Ezek jelenleg nem részei a tananyagnak, azonban érdemes rájuk nézni, ha szakdolgozat vagy TDK prezentálása során szeretnéd lenyűgözni a közönséged. Kedvcsináló: 
 
-```{r echo=F}
-knitr::include_url("https://www.youtube.com/watch?v=SnCi0s0e4Io")
+```{r, eval=knitr::is_html_output(excludes = "epub"), results = 'asis', echo = F}
+cat(
+'<iframe width="560" height="315" src="https://www.youtube.com/embed/SnCi0s0e4Io" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+)
 ```
